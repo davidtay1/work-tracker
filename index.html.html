@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Payment & Work Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#2563eb" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icon-192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 1.5rem;
+      background: #f5f5f7;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 1.5rem 1.75rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 1.7rem;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 1.25rem;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      border-radius: 12px;
+      background: #fafafa;
+      border: 1px solid #e2e2e8;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+      color: #333;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #d0d0d7;
+      font-size: 0.9rem;
+    }
+
+    textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .actions {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.25rem;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 0.45rem 1.1rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    thead {
+      background: #f3f4f6;
+    }
+
+    th, td {
+      padding: 0.45rem 0.5rem;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 600;
+    }
+
+    .table-wrapper {
+      max-height: 400px;
+      overflow: auto;
+      margin-top: 0.75rem;
+      border-radius: 12px;
+      border: 1px solid #e2e2e8;
+      background: #fff;
+    }
+
+    .no-data {
+      padding: 0.75rem;
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    .summary {
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+
+    .summary strong {
+      font-weight: 600;
+    }
+
+    .small {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.75rem;
+      }
+      .container {
+        padding: 1rem 1.1rem;
+        border-radius: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>My Payment & Work Tracker</h1>
+    <p class="subtitle">
+      Use this to record what you did, who paid you, and how much.  
+      You can export this to show your support workers.
+    </p>
+
+    <form id="entry-form">
+      <div>
+        <label for="date">Date paid *</label>
+        <input type="date" id="date" required />
+      </div>
+
+      <div>
+        <label for="payer">Who paid you? *</label>
+        <input type="text" id="payer" placeholder="Name / Organisation" required />
+      </div>
+
+      <div>
+        <label for="amount">Amount *</label>
+        <input type="number" id="amount" step="0.01" min="0" placeholder="0.00" required />
+      </div>
+
+      <div>
+        <label for="currency">Currency</label>
+        <select id="currency">
+          <option value="GBP">GBP £</option>
+          <option value="EUR">EUR €</option>
+          <option value="USD">USD $</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="hours">Hours worked</label>
+        <input type="number" id="hours" step="0.1" min="0" placeholder="e.g. 2.5" />
+      </div>
+
+      <div>
+        <label for="category">Category</label>
+        <select id="category">
+          <option value="">(optional)</option>
+          <option value="Video / creative work">Video / creative work</option>
+          <option value="Pub / hospitality">Pub / hospitality</option>
+          <option value="Household / chores">Household / chores</option>
+          <option value="Admin / online work">Admin / online work</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="full-width">
+        <label for="description">What did you do? (details for support people) *</label>
+        <textarea id="description" placeholder="Example: Edited 3 vlog clips for Edz’s YouTube channel, added subtitles, exported final video." required></textarea>
+      </div>
+
+      <div class="full-width">
+        <label for="notes">Extra notes (optional)</label>
+        <textarea id="notes" placeholder="Anything else you want to remember or explain."></textarea>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn-primary">Add record</button>
+        <button type="button" id="export-csv" class="btn-secondary">Export as CSV</button>
+        <button type="button" id="export-json" class="btn-secondary">Export as JSON</button>
+        <button type="button" id="clear-all" class="btn-danger">Delete ALL records</button>
+        <span class="small">All data is stored only in this browser (localStorage).</span>
+      </div>
+    </form>
+
+    <div class="summary" id="summary"></div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Payer</th>
+            <th>Amount</th>
+            <th>What you did</th>
+            <th>Hours</th>
+            <th>Category</th>
+            <th>Notes</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <tbody id="entries-body">
+          <!-- rows injected by JS -->
+        </tbody>
+      </table>
+      <div class="no-data" id="no-data-msg">No records yet. Add your first one above.</div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "myPaymentTracker_v1";
+
+    let entries = [];
+
+    function loadEntries() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          entries = JSON.parse(saved);
+        } catch (e) {
+          console.error("Failed to parse saved data", e);
+          entries = [];
+        }
+      }
+    }
+
+    function saveEntries() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    }
+
+    function formatCurrency(amount, currency) {
+      if (!amount && amount !== 0) return "";
+      return `${currency} ${Number(amount).toFixed(2)}`;
+    }
+
+    function renderEntries() {
+      const tbody = document.getElementById("entries-body");
+      const noDataMsg = document.getElementById("no-data-msg");
+      const summaryEl = document.getElementById("summary");
+
+      tbody.innerHTML = "";
+
+      if (!entries.length) {
+        noDataMsg.style.display = "block";
+        summaryEl.textContent = "";
+        return;
+      } else {
+        noDataMsg.style.display = "none";
+      }
+
+      let total = 0;
+      let currency = "GBP";
+
+      entries.forEach((entry, index) => {
+        const tr = document.createElement("tr");
+
+        const tdDate = document.createElement("td");
+        tdDate.textContent = entry.date || "";
+        tr.appendChild(tdDate);
+
+        const tdPayer = document.createElement("td");
+        tdPayer.textContent = entry.payer || "";
+        tr.appendChild(tdPayer);
+
+        const tdAmount = document.createElement("td");
+        tdAmount.textContent = formatCurrency(entry.amount, entry.currency || "GBP");
+        tr.appendChild(tdAmount);
+
+        const tdDesc = document.createElement("td");
+        tdDesc.textContent = entry.description || "";
+        tr.appendChild(tdDesc);
+
+        const tdHours = document.createElement("td");
+        tdHours.textContent = entry.hours || "";
+        tr.appendChild(tdHours);
+
+        const tdCategory = document.createElement("td");
+        tdCategory.textContent = entry.category || "";
+        tr.appendChild(tdCategory);
+
+        const tdNotes = document.createElement("td");
+        tdNotes.textContent = entry.notes || "";
+        tr.appendChild(tdNotes);
+
+        const tdRemove = document.createElement("td");
+        const btnRemove = document.createElement("button");
+        btnRemove.textContent = "✖";
+        btnRemove.className = "btn-danger";
+        btnRemove.style.padding = "0.2rem 0.5rem";
+        btnRemove.style.fontSize = "0.8rem";
+        btnRemove.addEventListener("click", () => {
+          if (confirm("Delete this record?")) {
+            entries.splice(index, 1);
+            saveEntries();
+            renderEntries();
+          }
+        });
+        tdRemove.appendChild(btnRemove);
+        tr.appendChild(tdRemove);
+
+        tbody.appendChild(tr);
+
+        // Summary
+        if (entry.amount) {
+          total += Number(entry.amount);
+        }
+        if (entry.currency) {
+          currency = entry.currency;
+        }
+      });
+
+      summaryEl.innerHTML = `
+        <strong>${entries.length}</strong> record(s) total.  
+        Total amount: <strong>${formatCurrency(total, currency)}</strong>
+      `;
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const date = document.getElementById("date").value;
+      const payer = document.getElementById("payer").value.trim();
+      const amount = document.getElementById("amount").value;
+      const currency = document.getElementById("currency").value;
+      const hours = document.getElementById("hours").value;
+      const category = document.getElementById("category").value;
+      const description = document.getElementById("description").value.trim();
+      const notes = document.getElementById("notes").value.trim();
+
+      if (!date || !payer || !amount || !description) {
+        alert("Please fill in all fields with *");
+        return;
+      }
+
+      const entry = {
+        date,
+        payer,
+        amount: Number(amount),
+        currency,
+        hours: hours ? Number(hours) : "",
+        category,
+        description,
+        notes,
+        createdAt: new Date().toISOString()
+      };
+
+      entries.push(entry);
+      saveEntries();
+      renderEntries();
+
+      // Clear some fields (keep currency & category)
+      document.getElementById("entry-form").reset();
+      document.getElementById("currency").value = currency;
+      document.getElementById("category").value = category;
+    }
+
+    function exportJSON() {
+      if (!entries.length) {
+        alert("No records to export.");
+        return;
+      }
+      const blob = new Blob([JSON.stringify(entries, null, 2)], {
+        type: "application/json"
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const today = new Date().toISOString().slice(0,10);
+      a.href = url;
+      a.download = `payment-tracker-${today}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function toCSVValue(value) {
+      if (value === null || value === undefined) return "";
+      const str = String(value);
+      if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+        return '"' + str.replace(/"/g, '""') + '"';
+      }
+      return str;
+    }
+
+    function exportCSV() {
+      if (!entries.length) {
+        alert("No records to export.");
+        return;
+      }
+      const headers = [
+        "date",
+        "payer",
+        "amount",
+        "currency",
+        "hours",
+        "category",
+        "description",
+        "notes",
+        "createdAt"
+      ];
+      const lines = [];
+      lines.push(headers.join(","));
+      entries.forEach(entry => {
+        const row = headers.map(h => toCSVValue(entry[h] ?? ""));
+        lines.push(row.join(","));
+      });
+      const csvContent = lines.join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const today = new Date().toISOString().slice(0,10);
+      a.href = url;
+      a.download = `payment-tracker-${today}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function clearAll() {
+      if (!entries.length) {
+        alert("No records to delete.");
+        return;
+      }
+      if (confirm("This will delete ALL records. Are you sure?")) {
+        entries = [];
+        saveEntries();
+        renderEntries();
+      }
+    }
+
+    // Setup
+    document.getElementById("entry-form").addEventListener("submit", handleFormSubmit);
+    document.getElementById("export-json").addEventListener("click", exportJSON);
+    document.getElementById("export-csv").addEventListener("click", exportCSV);
+    document.getElementById("clear-all").addEventListener("click", clearAll);
+
+    loadEntries();
+    renderEntries();
+      // Register service worker for PWA features
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("service-worker.js")
+        .catch((err) => console.error("SW registration failed:", err));
+    });
+  }
+  </script>
+</body>
+</html>
