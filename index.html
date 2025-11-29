@@ -50,55 +50,24 @@
       max-width: 1120px;
     }
 
-    /* --- Animations --- */
-
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes glowPulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5);
-      }
-      70% {
-        box-shadow: 0 0 0 12px rgba(37, 99, 235, 0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
-      }
+      0%   { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5); }
+      70%  { box-shadow: 0 0 0 12px rgba(37, 99, 235, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
     }
 
     @keyframes subtleFloat {
-      0% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-3px);
-      }
-      100% {
-        transform: translateY(0);
-      }
-    }
-
-    .fade-in {
-      animation: fadeInUp 0.5s ease-out forwards;
-    }
-
-    .fade-in-delayed {
-      opacity: 0;
-      animation: fadeInUp 0.55s ease-out forwards;
-      animation-delay: 0.08s;
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+      100% { transform: translateY(0); }
     }
 
     /* --- Auth / Login --- */
-
     .auth-overlay {
       display: flex;
       align-items: center;
@@ -161,36 +130,9 @@
     }
 
     .auth-subtitle {
-      margin: 0;
-      margin-bottom: 1.1rem;
+      margin: 0 0 1.1rem 0;
       font-size: 0.85rem;
       color: var(--text-muted);
-    }
-
-    .auth-tabs {
-      display: flex;
-      gap: 0.4rem;
-      margin-bottom: 0.9rem;
-      font-size: 0.78rem;
-    }
-
-    .auth-tab {
-      flex: 1;
-      padding: 0.4rem 0.5rem;
-      border-radius: 999px;
-      text-align: center;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text-muted);
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .auth-tab.active {
-      background: radial-gradient(circle at top left, #38bdf8, #2563eb);
-      color: white;
-      border-color: rgba(59, 130, 246, 0.95);
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.7);
     }
 
     .auth-form {
@@ -227,7 +169,6 @@
     .auth-hint {
       font-size: 0.72rem;
       color: var(--text-muted);
-      margin-bottom: 0.1rem;
     }
 
     .auth-error {
@@ -310,11 +251,7 @@
       margin-bottom: 1.25rem;
     }
 
-    .title-block {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
+    .title-block { display: flex; flex-direction: column; gap: 0.2rem; }
 
     .badge {
       display: inline-flex;
@@ -404,9 +341,7 @@
       color: #bfdbfe;
     }
 
-    .summary-pill-count {
-      color: var(--text-muted);
-    }
+    .summary-pill-count { color: var(--text-muted); }
 
     .logout-btn {
       border-radius: 999px;
@@ -434,28 +369,15 @@
     }
 
     @media (max-width: 800px) {
-      body {
-        padding: 0.75rem;
-      }
-      .app {
-        border-radius: 18px;
-        padding: 1rem;
-      }
-      .layout {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .summary-pill {
-        width: 100%;
-      }
+      body { padding: 0.75rem; }
+      .app { border-radius: 18px; padding: 1rem; }
+      .layout { grid-template-columns: minmax(0, 1fr); }
+      .summary-pill { width: 100%; }
     }
 
     @media (max-width: 480px) {
-      h1 {
-        font-size: 1.25rem;
-      }
-      .subtitle {
-        font-size: 0.8rem;
-      }
+      h1 { font-size: 1.25rem; }
+      .subtitle { font-size: 0.8rem; }
     }
 
     .card {
@@ -477,10 +399,7 @@
       pointer-events: none;
     }
 
-    .card-inner {
-      position: relative;
-      z-index: 1;
-    }
+    .card-inner { position: relative; z-index: 1; }
 
     .card-header {
       display: flex;
@@ -513,14 +432,10 @@
       margin-top: 0.25rem;
     }
 
-    #entry-form .full-width {
-      grid-column: 1 / -1;
-    }
+    #entry-form .full-width { grid-column: 1 / -1; }
 
     @media (max-width: 700px) {
-      #entry-form {
-        grid-template-columns: minmax(0, 1fr);
-      }
+      #entry-form { grid-template-columns: minmax(0, 1fr); }
     }
 
     label {
@@ -530,9 +445,7 @@
       color: var(--text-muted);
     }
 
-    input,
-    select,
-    textarea {
+    input, select, textarea {
       width: 100%;
       padding: 0.45rem 0.6rem;
       border-radius: 10px;
@@ -544,14 +457,11 @@
       transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
 
-    input::placeholder,
-    textarea::placeholder {
+    input::placeholder, textarea::placeholder {
       color: rgba(156, 163, 175, 0.7);
     }
 
-    input:focus,
-    select:focus,
-    textarea:focus {
+    input:focus, select:focus, textarea:focus {
       border-color: rgba(59, 130, 246, 0.9);
       box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.4);
       background-color: rgba(15, 23, 42, 1);
@@ -648,8 +558,7 @@
       box-shadow: 0 1px 0 rgba(31, 41, 55, 0.9);
     }
 
-    th,
-    td {
+    th, td {
       padding: 0.4rem 0.55rem;
       text-align: left;
       border-bottom: 1px solid rgba(31, 41, 55, 0.85);
@@ -664,17 +573,10 @@
       letter-spacing: 0.09em;
     }
 
-    td {
-      color: rgba(229, 231, 235, 0.92);
-    }
+    td { color: rgba(229, 231, 235, 0.92); }
 
-    tbody tr:nth-child(even) {
-      background-color: rgba(15, 23, 42, 0.9);
-    }
-
-    tbody tr:nth-child(odd) {
-      background-color: rgba(15, 23, 42, 0.75);
-    }
+    tbody tr:nth-child(even) { background-color: rgba(15, 23, 42, 0.9); }
+    tbody tr:nth-child(odd)  { background-color: rgba(15, 23, 42, 0.75); }
 
     .amount-cell {
       font-variant-numeric: tabular-nums;
@@ -735,13 +637,11 @@
       margin-top: 0.1rem;
     }
 
-    .summary strong {
-      color: #e5e7eb;
-    }
+    .summary strong { color: #e5e7eb; }
   </style>
 </head>
 <body>
-  <!-- Login / Auth layer -->
+  <!-- Login screen -->
   <div class="shell" id="auth-shell">
     <div class="auth-overlay">
       <div class="auth-card">
@@ -751,66 +651,30 @@
             <h1>Unlock Work Tracker</h1>
           </div>
           <p class="auth-subtitle">
-            Protect your payment & work history with a simple passcode. This only locks the data
-            on <strong>this device</strong>.
+            Enter your passcode to see your payment &amp; work history on this device.
           </p>
 
-          <div class="auth-tabs">
-            <div class="auth-tab active" id="tab-login">Log in</div>
-            <div class="auth-tab" id="tab-setup">First time / Reset</div>
-          </div>
-
-          <!-- Login form -->
           <form class="auth-form" id="login-form">
             <div>
               <label for="login-passcode">Passcode</label>
               <input
                 type="password"
                 id="login-passcode"
-                placeholder="Enter your passcode"
+                placeholder="Enter passcode (default: 4321)"
                 autocomplete="current-password"
               />
             </div>
-            <div class="auth-hint">If this is your first time, use the "First time / Reset" tab.</div>
+            <div class="auth-hint">
+              Default passcode is <strong>4321</strong>. You can change it in the code later if
+              you want.
+            </div>
             <div class="auth-error" id="login-error">Incorrect passcode. Try again.</div>
             <button type="submit" class="auth-btn">
               <span>Unlock tracker</span>
             </button>
             <div class="auth-note">
-              This login is local-only (no account on the internet). For real online accounts
-              you'd need a backend like Firebase.
-            </div>
-          </form>
-
-          <!-- Setup / reset form -->
-          <form class="auth-form" id="setup-form" style="display:none;">
-            <div>
-              <label for="setup-passcode">Create a new passcode</label>
-              <input
-                type="password"
-                id="setup-passcode"
-                placeholder="Choose a passcode (e.g. 1234 or a short phrase)"
-                autocomplete="new-password"
-              />
-            </div>
-            <div>
-              <label for="setup-passcode-confirm">Confirm passcode</label>
-              <input
-                type="password"
-                id="setup-passcode-confirm"
-                placeholder="Type it again"
-              />
-            </div>
-            <div class="auth-hint">
-              Keep this simple enough to remember but not something strangers can guess easily.
-            </div>
-            <div class="auth-error" id="setup-error">Passcodes don't match or are too short.</div>
-            <button type="submit" class="auth-btn">
-              <span>Save passcode & unlock</span>
-            </button>
-            <div class="auth-note">
-              This will replace any existing passcode but won't delete your saved records. Anyone
-              who knows the new passcode can view them on this device.
+              This is a simple local lock for privacy. It’s not meant to be strong online
+              security – your data never leaves this device.
             </div>
           </form>
         </div>
@@ -822,7 +686,7 @@
   <div class="shell" id="app-shell" style="display:none;">
     <div class="app">
       <div class="app-inner">
-        <header class="app-header fade-in">
+        <header class="app-header">
           <div class="title-block">
             <div class="badge">
               <span class="badge-dot"></span>
@@ -840,7 +704,7 @@
               🔐 Lock app
             </button>
           </div>
-          <div class="summary-pill fade-in-delayed">
+          <div class="summary-pill">
             <div class="summary-pill-label">Current Total</div>
             <div class="summary-pill-main">
               <span class="summary-pill-amount" id="pill-total">£0.00</span>
@@ -851,7 +715,7 @@
 
         <main class="layout">
           <!-- LEFT: FORM -->
-          <section class="card fade-in">
+          <section class="card">
             <div class="card-inner">
               <div class="card-header">
                 <div class="card-title">
@@ -965,7 +829,7 @@
           </section>
 
           <!-- RIGHT: TABLE -->
-          <section class="card entries-card fade-in-delayed">
+          <section class="card entries-card">
             <div class="card-inner">
               <div class="card-header">
                 <div class="card-title">
@@ -1007,24 +871,14 @@
 
   <script>
     const STORAGE_KEY = "myPaymentTracker_v1";
-    const PASSCODE_KEY = "myPaymentTracker_passcode";
+    const FIXED_PASSCODE = "4321"; // <- change this if you want a different code
     let entries = [];
-
-    /* -------- Login / Passcode logic -------- */
 
     const authShell = document.getElementById("auth-shell");
     const appShell = document.getElementById("app-shell");
     const loginForm = document.getElementById("login-form");
-    const setupForm = document.getElementById("setup-form");
     const loginError = document.getElementById("login-error");
-    const setupError = document.getElementById("setup-error");
-    const tabLogin = document.getElementById("tab-login");
-    const tabSetup = document.getElementById("tab-setup");
     const logoutBtn = document.getElementById("logout-btn");
-
-    function hasPasscode() {
-      return !!localStorage.getItem(PASSCODE_KEY);
-    }
 
     function showApp() {
       authShell.style.display = "none";
@@ -1036,47 +890,10 @@
       authShell.style.display = "block";
     }
 
-    function switchToLogin() {
-      tabLogin.classList.add("active");
-      tabSetup.classList.remove("active");
-      loginForm.style.display = "flex";
-      setupForm.style.display = "none";
-      loginError.style.display = "none";
-      setupError.style.display = "none";
-    }
-
-    function switchToSetup() {
-      tabSetup.classList.add("active");
-      tabLogin.classList.remove("active");
-      setupForm.style.display = "flex";
-      loginForm.style.display = "none";
-      loginError.style.display = "none";
-      setupError.style.display = "none";
-    }
-
-    tabLogin.addEventListener("click", () => {
-      if (!hasPasscode()) {
-        // If no passcode yet, force setup tab
-        switchToSetup();
-      } else {
-        switchToLogin();
-      }
-    });
-
-    tabSetup.addEventListener("click", () => {
-      switchToSetup();
-    });
-
     loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const input = document.getElementById("login-passcode").value;
-      const stored = localStorage.getItem(PASSCODE_KEY) || "";
-      if (!stored) {
-        // No passcode set yet, send them to setup
-        switchToSetup();
-        return;
-      }
-      if (input && input === stored) {
+      if (input && input === FIXED_PASSCODE) {
         loginError.style.display = "none";
         document.getElementById("login-passcode").value = "";
         showApp();
@@ -1085,35 +902,14 @@
       }
     });
 
-    setupForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const p1 = document.getElementById("setup-passcode").value;
-      const p2 = document.getElementById("setup-passcode-confirm").value;
-      if (!p1 || p1.length < 3 || p1 !== p2) {
-        setupError.style.display = "block";
-        return;
-      }
-      localStorage.setItem(PASSCODE_KEY, p1);
-      setupError.style.display = "none";
-      document.getElementById("setup-passcode").value = "";
-      document.getElementById("setup-passcode-confirm").value = "";
-      showApp();
-    });
-
     logoutBtn.addEventListener("click", () => {
       showAuth();
-      switchToLogin();
     });
 
-    // Initial auth state
-    if (hasPasscode()) {
-      switchToLogin();
-    } else {
-      switchToSetup();
-    }
+    // Start on auth screen
+    showAuth();
 
     /* -------- Payment tracker logic -------- */
-
     function loadEntries() {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -1226,12 +1022,8 @@
 
         tbody.appendChild(tr);
 
-        if (entry.amount) {
-          total += Number(entry.amount);
-        }
-        if (entry.currency) {
-          currency = entry.currency;
-        }
+        if (entry.amount) total += Number(entry.amount);
+        if (entry.currency) currency = entry.currency;
       });
 
       summaryEl.innerHTML = `
