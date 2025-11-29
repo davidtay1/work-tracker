@@ -4,266 +4,684 @@
   <meta charset="UTF-8" />
   <title>My Payment & Work Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- PWA bits -->
   <meta name="theme-color" content="#2563eb" />
-<link rel="manifest" href="manifest.webmanifest" />
-<link rel="icon" href="icon-192.png" sizes="192x192" />
-<link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon-192.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
   <style>
+    :root {
+      --bg: #020617;
+      --bg-soft: #0b1220;
+      --card: #020617;
+      --card-soft: #020617;
+      --accent: #2563eb;
+      --accent-soft: rgba(37, 99, 235, 0.2);
+      --accent-strong: #1d4ed8;
+      --border-subtle: #1f2937;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --danger: #ef4444;
+      --danger-soft: rgba(239, 68, 68, 0.15);
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow-soft: 0 18px 50px rgba(15, 23, 42, 0.65);
+      --shadow-small: 0 8px 24px rgba(15, 23, 42, 0.65);
+    }
+
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
     }
 
     body {
       margin: 0;
-      padding: 1.5rem;
-      background: #f5f5f7;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1d283a 0, #020617 45%);
+      color: var(--text-main);
+      padding: 1.25rem;
+      display: flex;
+      justify-content: center;
     }
 
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 1.5rem 1.75rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    .shell {
+      width: 100%;
+      max-width: 1120px;
     }
 
-    h1 {
-      margin-top: 0;
-      font-size: 1.7rem;
+    .app {
+      background: radial-gradient(circle at top, #111827 0, #020617 55%);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 1.25rem 1.25rem 1.5rem;
+      position: relative;
+      overflow: hidden;
     }
 
-    .subtitle {
-      color: #666;
+    .app::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 10% 0, rgba(56, 189, 248, 0.07), transparent 55%),
+        radial-gradient(circle at 90% 0, rgba(167, 139, 250, 0.07), transparent 55%);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    .app-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .app-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1rem;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 1.25rem;
     }
 
-    form {
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.15rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: var(--text-muted);
+      background-color: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(10px);
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #22c55e, #166534);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.45rem;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .h1-accent {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #38bdf8, #1d4ed8);
+      box-shadow: 0 0 12px rgba(37, 99, 235, 0.9);
+      font-size: 0.8rem;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      max-width: 420px;
+    }
+
+    .summary-pill {
+      min-width: 180px;
+      align-self: flex-start;
+      padding: 0.6rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.45);
+      background: radial-gradient(circle at 0 0, rgba(37, 99, 235, 0.35), transparent 60%),
+        rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-small);
+      font-size: 0.78rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.05rem;
+    }
+
+    .summary-pill-label {
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      color: rgba(191, 219, 254, 0.9);
+      font-weight: 500;
+      font-size: 0.67rem;
+    }
+
+    .summary-pill-main {
+      display: flex;
+      align-items: baseline;
+      gap: 0.3rem;
+    }
+
+    .summary-pill-amount {
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: #bfdbfe;
+    }
+
+    .summary-pill-count {
+      color: var(--text-muted);
+    }
+
+    .layout {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 0.75rem 1rem;
-      margin-bottom: 1.5rem;
-      padding: 1rem;
-      border-radius: 12px;
-      background: #fafafa;
-      border: 1px solid #e2e2e8;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.5fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 800px) {
+      body {
+        padding: 0.75rem;
+      }
+      .app {
+        border-radius: 18px;
+        padding: 1rem;
+      }
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .summary-pill {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.25rem;
+      }
+      .subtitle {
+        font-size: 0.8rem;
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), #020617);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 0.85rem 0.9rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: radial-gradient(circle at 110% -10%, rgba(37, 99, 235, 0.18), transparent 60%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .chip {
+      font-size: 0.7rem;
+      padding: 0.06rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--text-muted);
+    }
+
+    #entry-form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    #entry-form .full-width {
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 700px) {
+      #entry-form {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
     label {
       display: block;
-      font-size: 0.85rem;
-      margin-bottom: 0.25rem;
-      color: #333;
+      font-size: 0.75rem;
+      margin-bottom: 0.18rem;
+      color: var(--text-muted);
     }
 
-    input, select, textarea {
+    input,
+    select,
+    textarea {
       width: 100%;
-      padding: 0.4rem 0.5rem;
-      border-radius: 8px;
-      border: 1px solid #d0d0d7;
-      font-size: 0.9rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 10px;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      background-color: rgba(15, 23, 42, 0.95);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(156, 163, 175, 0.7);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(59, 130, 246, 0.9);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.4);
+      background-color: rgba(15, 23, 42, 1);
     }
 
     textarea {
-      min-height: 60px;
+      min-height: 70px;
       resize: vertical;
-    }
-
-    .full-width {
-      grid-column: 1 / -1;
     }
 
     .actions {
       grid-column: 1 / -1;
       display: flex;
-      gap: 0.5rem;
       flex-wrap: wrap;
-      margin-top: 0.25rem;
+      gap: 0.45rem;
+      margin-top: 0.3rem;
+      align-items: center;
     }
 
     button {
-      border: none;
       border-radius: 999px;
-      padding: 0.45rem 1.1rem;
-      font-size: 0.9rem;
+      border: none;
+      padding: 0.45rem 0.95rem;
+      font-size: 0.8rem;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    button:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: none;
     }
 
     .btn-primary {
-      background: #2563eb;
+      background: radial-gradient(circle at top left, #38bdf8, #2563eb);
       color: white;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.65);
     }
 
     .btn-secondary {
-      background: #e5e7eb;
-      color: #111827;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--text-main);
     }
 
     .btn-danger {
-      background: #ef4444;
-      color: white;
+      background: rgba(127, 29, 29, 0.95);
+      border: 1px solid rgba(248, 113, 113, 0.65);
+      color: #fee2e2;
+    }
+
+    .btn-icon {
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
+
+    .small {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .entries-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      max-height: 430px;
+    }
+
+    .table-wrapper {
+      flex: 1;
+      overflow: auto;
+      border-radius: 14px;
+      border: 1px solid rgba(55, 65, 81, 0.85);
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), #020617);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 0.75rem;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
+      min-width: 650px;
     }
 
     thead {
-      background: #f3f4f6;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), #020617);
+      box-shadow: 0 1px 0 rgba(31, 41, 55, 0.9);
     }
 
-    th, td {
-      padding: 0.45rem 0.5rem;
-      border-bottom: 1px solid #e5e7eb;
+    th,
+    td {
+      padding: 0.4rem 0.55rem;
       text-align: left;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.85);
       vertical-align: top;
     }
 
     th {
-      font-weight: 600;
+      font-weight: 500;
+      color: rgba(209, 213, 219, 0.9);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
     }
 
-    .table-wrapper {
-      max-height: 400px;
-      overflow: auto;
-      margin-top: 0.75rem;
-      border-radius: 12px;
-      border: 1px solid #e2e2e8;
-      background: #fff;
+    td {
+      color: rgba(229, 231, 235, 0.92);
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: rgba(15, 23, 42, 0.9);
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: rgba(15, 23, 42, 0.75);
+    }
+
+    .amount-cell {
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+      color: #bfdbfe;
+    }
+
+    .desc-cell {
+      max-width: 260px;
+      word-wrap: break-word;
+      white-space: normal;
+    }
+
+    .category-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: rgba(209, 213, 219, 0.95);
+    }
+
+    .note-text {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .remove-btn {
+      padding: 0.2rem 0.5rem;
+      font-size: 0.7rem;
+      border-radius: 999px;
+      background: var(--danger-soft);
+      border: 1px solid rgba(248, 113, 113, 0.85);
+      color: #fecaca;
+      cursor: pointer;
+      transition: background 0.12s ease, transform 0.08s ease;
+    }
+
+    .remove-btn:active {
+      transform: translateY(1px) scale(0.97);
     }
 
     .no-data {
-      padding: 0.75rem;
-      color: #6b7280;
-      font-size: 0.9rem;
+      padding: 0.6rem 0.75rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
     }
 
     .summary {
-      margin-top: 0.75rem;
-      font-size: 0.9rem;
-      color: #374151;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.1rem;
     }
 
     .summary strong {
-      font-weight: 600;
-    }
-
-    .small {
-      font-size: 0.8rem;
-      color: #6b7280;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 0.75rem;
-      }
-      .container {
-        padding: 1rem 1.1rem;
-        border-radius: 12px;
-      }
+      color: #e5e7eb;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>My Payment & Work Tracker</h1>
-    <p class="subtitle">
-      Use this to record what you did, who paid you, and how much.  
-      You can export this to show your support workers.
-    </p>
+  <div class="shell">
+    <div class="app">
+      <div class="app-inner">
+        <header class="app-header">
+          <div class="title-block">
+            <div class="badge">
+              <span class="badge-dot"></span>
+              <span>Personal &amp; Private – On Your Device Only</span>
+            </div>
+            <h1>
+              <span class="h1-accent">£</span>
+              <span>My Payment &amp; Work Tracker</span>
+            </h1>
+            <p class="subtitle">
+              Log what you did, who paid you, and how much. Use this as clear evidence for
+              support workers of the work you’ve done.
+            </p>
+          </div>
+          <div class="summary-pill">
+            <div class="summary-pill-label">Current Total</div>
+            <div class="summary-pill-main">
+              <span class="summary-pill-amount" id="pill-total">£0.00</span>
+              <span class="summary-pill-count" id="pill-count">0 records</span>
+            </div>
+          </div>
+        </header>
 
-    <form id="entry-form">
-      <div>
-        <label for="date">Date paid *</label>
-        <input type="date" id="date" required />
+        <main class="layout">
+          <!-- LEFT: FORM -->
+          <section class="card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div class="card-title">
+                  New entry
+                  <span class="chip">Add what you did</span>
+                </div>
+              </div>
+
+              <form id="entry-form">
+                <div>
+                  <label for="date">Date paid *</label>
+                  <input type="date" id="date" required />
+                </div>
+
+                <div>
+                  <label for="payer">Who paid you? *</label>
+                  <input
+                    type="text"
+                    id="payer"
+                    placeholder="Name / organisation"
+                    autocomplete="off"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="amount">Amount *</label>
+                  <input
+                    type="number"
+                    id="amount"
+                    step="0.01"
+                    min="0"
+                    placeholder="0.00"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="currency">Currency</label>
+                  <select id="currency">
+                    <option value="GBP">GBP £</option>
+                    <option value="EUR">EUR €</option>
+                    <option value="USD">USD $</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="hours">Hours worked</label>
+                  <input
+                    type="number"
+                    id="hours"
+                    step="0.1"
+                    min="0"
+                    placeholder="e.g. 2.5"
+                  />
+                </div>
+
+                <div>
+                  <label for="category">Category</label>
+                  <select id="category">
+                    <option value="">(optional)</option>
+                    <option value="Video / creative work">Video / creative work</option>
+                    <option value="Pub / hospitality">Pub / hospitality</option>
+                    <option value="Household / chores">Household / chores</option>
+                    <option value="Admin / online work">Admin / online work</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="full-width">
+                  <label for="description">What did you do? *</label>
+                  <textarea
+                    id="description"
+                    placeholder="Example: Edited 3 clips for YouTube, added subtitles and exported the final video."
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="full-width">
+                  <label for="notes">Extra notes (optional)</label>
+                  <textarea
+                    id="notes"
+                    placeholder="Anything extra you want to explain (e.g. who you worked with, where, how it went)."
+                  ></textarea>
+                </div>
+
+                <div class="actions">
+                  <button type="submit" class="btn-primary">
+                    <span class="btn-icon">＋</span>
+                    <span>Add record</span>
+                  </button>
+                  <button type="button" id="export-csv" class="btn-secondary">
+                    <span class="btn-icon">⬇</span>
+                    <span>Export CSV</span>
+                  </button>
+                  <button type="button" id="export-json" class="btn-secondary">
+                    <span class="btn-icon">⬇</span>
+                    <span>Export JSON</span>
+                  </button>
+                  <button type="button" id="clear-all" class="btn-danger">
+                    <span class="btn-icon">🗑</span>
+                    <span>Delete ALL</span>
+                  </button>
+                  <span class="small">
+                    Your entries are stored only in this browser (localStorage) – nothing is sent
+                    to GitHub or the internet.
+                  </span>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <!-- RIGHT: TABLE -->
+          <section class="card entries-card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div class="card-title">
+                  History
+                  <span class="chip" id="entries-label">0 record(s)</span>
+                </div>
+              </div>
+
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Payer</th>
+                      <th>Amount</th>
+                      <th>What you did</th>
+                      <th>Hours</th>
+                      <th>Category</th>
+                      <th>Notes</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody id="entries-body">
+                    <!-- rows injected by JS -->
+                  </tbody>
+                </table>
+                <div class="no-data" id="no-data-msg">
+                  No records yet. Add your first one on the left.
+                </div>
+              </div>
+
+              <div class="summary" id="summary"></div>
+            </div>
+          </section>
+        </main>
       </div>
-
-      <div>
-        <label for="payer">Who paid you? *</label>
-        <input type="text" id="payer" placeholder="Name / Organisation" required />
-      </div>
-
-      <div>
-        <label for="amount">Amount *</label>
-        <input type="number" id="amount" step="0.01" min="0" placeholder="0.00" required />
-      </div>
-
-      <div>
-        <label for="currency">Currency</label>
-        <select id="currency">
-          <option value="GBP">GBP £</option>
-          <option value="EUR">EUR €</option>
-          <option value="USD">USD $</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="hours">Hours worked</label>
-        <input type="number" id="hours" step="0.1" min="0" placeholder="e.g. 2.5" />
-      </div>
-
-      <div>
-        <label for="category">Category</label>
-        <select id="category">
-          <option value="">(optional)</option>
-          <option value="Video / creative work">Video / creative work</option>
-          <option value="Pub / hospitality">Pub / hospitality</option>
-          <option value="Household / chores">Household / chores</option>
-          <option value="Admin / online work">Admin / online work</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-
-      <div class="full-width">
-        <label for="description">What did you do?  *</label>
-        <textarea id="description" placeholder="Example: Cleaned everyone, helped people out." required></textarea>
-      </div>
-
-      <div class="full-width">
-        <label for="notes">Extra notes (optional)</label>
-        <textarea id="notes" placeholder="Anything else you want to remember or explain."></textarea>
-      </div>
-
-      <div class="actions">
-        <button type="submit" class="btn-primary">Add record</button>
-        <button type="button" id="export-csv" class="btn-secondary">Export as CSV</button>
-        <button type="button" id="export-json" class="btn-secondary">Export as JSON</button>
-        <button type="button" id="clear-all" class="btn-danger">Delete ALL records</button>
-        <span class="small">All data is stored only in this browser (localStorage).</span>
-      </div>
-    </form>
-
-    <div class="summary" id="summary"></div>
-
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Payer</th>
-            <th>Amount</th>
-            <th>What you did</th>
-            <th>Hours</th>
-            <th>Category</th>
-            <th>Notes</th>
-            <th>Remove</th>
-          </tr>
-        </thead>
-        <tbody id="entries-body">
-          <!-- rows injected by JS -->
-        </tbody>
-      </table>
-      <div class="no-data" id="no-data-msg">No records yet. Add your first one above.</div>
     </div>
   </div>
 
   <script>
     const STORAGE_KEY = "myPaymentTracker_v1";
-
     let entries = [];
 
     function loadEntries() {
@@ -283,8 +701,18 @@
     }
 
     function formatCurrency(amount, currency) {
-      if (!amount && amount !== 0) return "";
+      if (amount === undefined || amount === null || amount === "") return "";
       return `${currency} ${Number(amount).toFixed(2)}`;
+    }
+
+    function updateHeaderSummary(total, count, currency) {
+      const pillTotal = document.getElementById("pill-total");
+      const pillCount = document.getElementById("pill-count");
+      const label = document.getElementById("entries-label");
+
+      pillTotal.textContent = formatCurrency(total || 0, currency || "GBP");
+      pillCount.textContent = `${count} record${count === 1 ? "" : "s"}`;
+      label.textContent = `${count} record${count === 1 ? "" : "s"}`;
     }
 
     function renderEntries() {
@@ -297,6 +725,7 @@
       if (!entries.length) {
         noDataMsg.style.display = "block";
         summaryEl.textContent = "";
+        updateHeaderSummary(0, 0, "GBP");
         return;
       } else {
         noDataMsg.style.display = "none";
@@ -318,30 +747,43 @@
 
         const tdAmount = document.createElement("td");
         tdAmount.textContent = formatCurrency(entry.amount, entry.currency || "GBP");
+        tdAmount.classList.add("amount-cell");
         tr.appendChild(tdAmount);
 
         const tdDesc = document.createElement("td");
         tdDesc.textContent = entry.description || "";
+        tdDesc.classList.add("desc-cell");
         tr.appendChild(tdDesc);
 
         const tdHours = document.createElement("td");
-        tdHours.textContent = entry.hours || "";
+        tdHours.textContent =
+          entry.hours !== undefined && entry.hours !== null && entry.hours !== ""
+            ? entry.hours
+            : "";
         tr.appendChild(tdHours);
 
         const tdCategory = document.createElement("td");
-        tdCategory.textContent = entry.category || "";
+        if (entry.category) {
+          const cat = document.createElement("span");
+          cat.className = "category-pill";
+          cat.textContent = entry.category;
+          tdCategory.appendChild(cat);
+        }
         tr.appendChild(tdCategory);
 
         const tdNotes = document.createElement("td");
-        tdNotes.textContent = entry.notes || "";
+        if (entry.notes) {
+          const noteSpan = document.createElement("span");
+          noteSpan.className = "note-text";
+          noteSpan.textContent = entry.notes;
+          tdNotes.appendChild(noteSpan);
+        }
         tr.appendChild(tdNotes);
 
         const tdRemove = document.createElement("td");
         const btnRemove = document.createElement("button");
-        btnRemove.textContent = "✖";
-        btnRemove.className = "btn-danger";
-        btnRemove.style.padding = "0.2rem 0.5rem";
-        btnRemove.style.fontSize = "0.8rem";
+        btnRemove.textContent = "Remove";
+        btnRemove.className = "remove-btn";
         btnRemove.addEventListener("click", () => {
           if (confirm("Delete this record?")) {
             entries.splice(index, 1);
@@ -354,7 +796,6 @@
 
         tbody.appendChild(tr);
 
-        // Summary
         if (entry.amount) {
           total += Number(entry.amount);
         }
@@ -364,9 +805,13 @@
       });
 
       summaryEl.innerHTML = `
-        <strong>${entries.length}</strong> record(s) total.  
-        Total amount: <strong>${formatCurrency(total, currency)}</strong>
+        <span><strong>${entries.length}</strong> record${
+        entries.length === 1 ? "" : "s"
+      } saved on this device.</span>
+        <span>Total: <strong>${formatCurrency(total, currency)}</strong></span>
       `;
+
+      updateHeaderSummary(total, entries.length, currency);
     }
 
     function handleFormSubmit(event) {
@@ -394,17 +839,19 @@
         category,
         description,
         notes,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
 
       entries.push(entry);
       saveEntries();
       renderEntries();
 
-      // Clear some fields (keep currency & category)
-      document.getElementById("entry-form").reset();
-      document.getElementById("currency").value = currency;
-      document.getElementById("category").value = category;
+      const form = document.getElementById("entry-form");
+      const keepCurrency = currency;
+      const keepCategory = category;
+      form.reset();
+      document.getElementById("currency").value = keepCurrency;
+      document.getElementById("category").value = keepCategory;
     }
 
     function exportJSON() {
@@ -413,11 +860,11 @@
         return;
       }
       const blob = new Blob([JSON.stringify(entries, null, 2)], {
-        type: "application/json"
+        type: "application/json",
       });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      const today = new Date().toISOString().slice(0,10);
+      const today = new Date().toISOString().slice(0, 10);
       a.href = url;
       a.download = `payment-tracker-${today}.json`;
       document.body.appendChild(a);
@@ -449,19 +896,19 @@
         "category",
         "description",
         "notes",
-        "createdAt"
+        "createdAt",
       ];
       const lines = [];
       lines.push(headers.join(","));
-      entries.forEach(entry => {
-        const row = headers.map(h => toCSVValue(entry[h] ?? ""));
+      entries.forEach((entry) => {
+        const row = headers.map((h) => toCSVValue(entry[h] ?? ""));
         lines.push(row.join(","));
       });
       const csvContent = lines.join("\n");
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      const today = new Date().toISOString().slice(0,10);
+      const today = new Date().toISOString().slice(0, 10);
       a.href = url;
       a.download = `payment-tracker-${today}.csv`;
       document.body.appendChild(a);
@@ -475,14 +922,13 @@
         alert("No records to delete.");
         return;
       }
-      if (confirm("This will delete ALL records. Are you sure?")) {
+      if (confirm("This will delete ALL records on this device. Are you sure?")) {
         entries = [];
         saveEntries();
         renderEntries();
       }
     }
 
-    // Setup
     document.getElementById("entry-form").addEventListener("submit", handleFormSubmit);
     document.getElementById("export-json").addEventListener("click", exportJSON);
     document.getElementById("export-csv").addEventListener("click", exportCSV);
@@ -490,15 +936,15 @@
 
     loadEntries();
     renderEntries();
-      // Register service worker for PWA features
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker
-        .register("service-worker.js")
-        .catch((err) => console.error("SW registration failed:", err));
-    });
-  }
+
+    // PWA service worker
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .catch((err) => console.error("SW registration failed:", err));
+      });
+    }
   </script>
 </body>
 </html>
-
