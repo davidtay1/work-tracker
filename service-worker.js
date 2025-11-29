@@ -1,4 +1,4 @@
-const CACHE_NAME = "payment-tracker-cache-v2";
+const CACHE_NAME = "payment-tracker-cache-v3";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
@@ -32,4 +32,5 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
 
