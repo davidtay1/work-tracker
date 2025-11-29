@@ -14,9 +14,6 @@
   <style>
     :root {
       --bg: #020617;
-      --bg-soft: #0b1220;
-      --card: #020617;
-      --card-soft: #020617;
       --accent: #2563eb;
       --accent-soft: rgba(37, 99, 235, 0.2);
       --accent-strong: #1d4ed8;
@@ -40,17 +37,242 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at top, #1d283a 0, #020617 45%);
+      background: radial-gradient(circle at top, #1f2937 0, #020617 45%);
       color: var(--text-main);
       padding: 1.25rem;
       display: flex;
       justify-content: center;
+      align-items: stretch;
     }
 
     .shell {
       width: 100%;
       max-width: 1120px;
     }
+
+    /* --- Animations --- */
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5);
+      }
+      70% {
+        box-shadow: 0 0 0 12px rgba(37, 99, 235, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+      }
+    }
+
+    @keyframes subtleFloat {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-3px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    .fade-in-delayed {
+      opacity: 0;
+      animation: fadeInUp 0.55s ease-out forwards;
+      animation-delay: 0.08s;
+    }
+
+    /* --- Auth / Login --- */
+
+    .auth-overlay {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: radial-gradient(circle at top, rgba(37, 99, 235, 0.35), #020617);
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      box-shadow: var(--shadow-soft);
+      padding: 1.5rem 1.4rem 1.6rem;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.55s ease-out;
+    }
+
+    .auth-card::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.25), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(167, 139, 250, 0.24), transparent 55%);
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    .auth-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-title {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .auth-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #38bdf8, #2563eb);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      box-shadow: 0 0 16px rgba(37, 99, 235, 0.95);
+      animation: subtleFloat 4s ease-in-out infinite;
+    }
+
+    .auth-title h1 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .auth-subtitle {
+      margin: 0;
+      margin-bottom: 1.1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.9rem;
+      font-size: 0.78rem;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 0.4rem 0.5rem;
+      border-radius: 999px;
+      text-align: center;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .auth-tab.active {
+      background: radial-gradient(circle at top left, #38bdf8, #2563eb);
+      color: white;
+      border-color: rgba(59, 130, 246, 0.95);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.7);
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .auth-form label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.18rem;
+      display: block;
+    }
+
+    .auth-form input {
+      width: 100%;
+      padding: 0.48rem 0.6rem;
+      border-radius: 12px;
+      border: 1px solid rgba(55, 65, 81, 0.85);
+      background-color: rgba(15, 23, 42, 0.96);
+      color: var(--text-main);
+      font-size: 0.86rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .auth-form input:focus {
+      border-color: rgba(59, 130, 246, 0.95);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.6);
+      background-color: rgba(15, 23, 42, 1);
+    }
+
+    .auth-hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 0.1rem;
+    }
+
+    .auth-error {
+      font-size: 0.75rem;
+      color: #fecaca;
+      background: rgba(127, 29, 29, 0.7);
+      border-radius: 999px;
+      padding: 0.28rem 0.6rem;
+      border: 1px solid rgba(248, 113, 113, 0.8);
+      margin-top: 0.1rem;
+      display: none;
+    }
+
+    .auth-btn {
+      margin-top: 0.2rem;
+      border-radius: 999px;
+      border: none;
+      padding: 0.5rem 0.95rem;
+      font-size: 0.86rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+      width: 100%;
+      background: radial-gradient(circle at top left, #38bdf8, #2563eb);
+      color: white;
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.85);
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      animation: glowPulse 3.5s infinite;
+    }
+
+    .auth-btn:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: none;
+    }
+
+    .auth-note {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 0.55rem;
+    }
+
+    /* --- Main app --- */
 
     .app {
       background: radial-gradient(circle at top, #111827 0, #020617 55%);
@@ -60,6 +282,7 @@
       padding: 1.25rem 1.25rem 1.5rem;
       position: relative;
       overflow: hidden;
+      animation: fadeInUp 0.55s ease-out;
     }
 
     .app::before {
@@ -129,12 +352,12 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 999px;
       background: radial-gradient(circle at 30% 20%, #38bdf8, #1d4ed8);
       box-shadow: 0 0 12px rgba(37, 99, 235, 0.9);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
     }
 
     .subtitle {
@@ -145,7 +368,7 @@
     }
 
     .summary-pill {
-      min-width: 180px;
+      min-width: 200px;
       align-self: flex-start;
       padding: 0.6rem 0.85rem;
       border-radius: 999px;
@@ -172,6 +395,7 @@
       display: flex;
       align-items: baseline;
       gap: 0.3rem;
+      justify-content: space-between;
     }
 
     .summary-pill-amount {
@@ -182,6 +406,25 @@
 
     .summary-pill-count {
       color: var(--text-muted);
+    }
+
+    .logout-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.25rem 0.6rem;
+      font-size: 0.72rem;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-top: 0.25rem;
+    }
+
+    .logout-btn:hover {
+      border-color: rgba(248, 113, 113, 0.8);
+      color: #fecaca;
     }
 
     .layout {
@@ -222,6 +465,7 @@
       padding: 0.85rem 0.9rem;
       position: relative;
       overflow: hidden;
+      animation: fadeInUp 0.5s ease-out;
     }
 
     .card::before {
@@ -497,10 +741,88 @@
   </style>
 </head>
 <body>
-  <div class="shell">
+  <!-- Login / Auth layer -->
+  <div class="shell" id="auth-shell">
+    <div class="auth-overlay">
+      <div class="auth-card">
+        <div class="auth-inner">
+          <div class="auth-title">
+            <div class="auth-icon">£</div>
+            <h1>Unlock Work Tracker</h1>
+          </div>
+          <p class="auth-subtitle">
+            Protect your payment & work history with a simple passcode. This only locks the data
+            on <strong>this device</strong>.
+          </p>
+
+          <div class="auth-tabs">
+            <div class="auth-tab active" id="tab-login">Log in</div>
+            <div class="auth-tab" id="tab-setup">First time / Reset</div>
+          </div>
+
+          <!-- Login form -->
+          <form class="auth-form" id="login-form">
+            <div>
+              <label for="login-passcode">Passcode</label>
+              <input
+                type="password"
+                id="login-passcode"
+                placeholder="Enter your passcode"
+                autocomplete="current-password"
+              />
+            </div>
+            <div class="auth-hint">If this is your first time, use the "First time / Reset" tab.</div>
+            <div class="auth-error" id="login-error">Incorrect passcode. Try again.</div>
+            <button type="submit" class="auth-btn">
+              <span>Unlock tracker</span>
+            </button>
+            <div class="auth-note">
+              This login is local-only (no account on the internet). For real online accounts
+              you'd need a backend like Firebase.
+            </div>
+          </form>
+
+          <!-- Setup / reset form -->
+          <form class="auth-form" id="setup-form" style="display:none;">
+            <div>
+              <label for="setup-passcode">Create a new passcode</label>
+              <input
+                type="password"
+                id="setup-passcode"
+                placeholder="Choose a passcode (e.g. 1234 or a short phrase)"
+                autocomplete="new-password"
+              />
+            </div>
+            <div>
+              <label for="setup-passcode-confirm">Confirm passcode</label>
+              <input
+                type="password"
+                id="setup-passcode-confirm"
+                placeholder="Type it again"
+              />
+            </div>
+            <div class="auth-hint">
+              Keep this simple enough to remember but not something strangers can guess easily.
+            </div>
+            <div class="auth-error" id="setup-error">Passcodes don't match or are too short.</div>
+            <button type="submit" class="auth-btn">
+              <span>Save passcode & unlock</span>
+            </button>
+            <div class="auth-note">
+              This will replace any existing passcode but won't delete your saved records. Anyone
+              who knows the new passcode can view them on this device.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main app -->
+  <div class="shell" id="app-shell" style="display:none;">
     <div class="app">
       <div class="app-inner">
-        <header class="app-header">
+        <header class="app-header fade-in">
           <div class="title-block">
             <div class="badge">
               <span class="badge-dot"></span>
@@ -514,8 +836,11 @@
               Log what you did, who paid you, and how much. Use this as clear evidence for
               support workers of the work you’ve done.
             </p>
+            <button type="button" class="logout-btn" id="logout-btn">
+              🔐 Lock app
+            </button>
           </div>
-          <div class="summary-pill">
+          <div class="summary-pill fade-in-delayed">
             <div class="summary-pill-label">Current Total</div>
             <div class="summary-pill-main">
               <span class="summary-pill-amount" id="pill-total">£0.00</span>
@@ -526,7 +851,7 @@
 
         <main class="layout">
           <!-- LEFT: FORM -->
-          <section class="card">
+          <section class="card fade-in">
             <div class="card-inner">
               <div class="card-header">
                 <div class="card-title">
@@ -640,7 +965,7 @@
           </section>
 
           <!-- RIGHT: TABLE -->
-          <section class="card entries-card">
+          <section class="card entries-card fade-in-delayed">
             <div class="card-inner">
               <div class="card-header">
                 <div class="card-title">
@@ -682,7 +1007,112 @@
 
   <script>
     const STORAGE_KEY = "myPaymentTracker_v1";
+    const PASSCODE_KEY = "myPaymentTracker_passcode";
     let entries = [];
+
+    /* -------- Login / Passcode logic -------- */
+
+    const authShell = document.getElementById("auth-shell");
+    const appShell = document.getElementById("app-shell");
+    const loginForm = document.getElementById("login-form");
+    const setupForm = document.getElementById("setup-form");
+    const loginError = document.getElementById("login-error");
+    const setupError = document.getElementById("setup-error");
+    const tabLogin = document.getElementById("tab-login");
+    const tabSetup = document.getElementById("tab-setup");
+    const logoutBtn = document.getElementById("logout-btn");
+
+    function hasPasscode() {
+      return !!localStorage.getItem(PASSCODE_KEY);
+    }
+
+    function showApp() {
+      authShell.style.display = "none";
+      appShell.style.display = "block";
+    }
+
+    function showAuth() {
+      appShell.style.display = "none";
+      authShell.style.display = "block";
+    }
+
+    function switchToLogin() {
+      tabLogin.classList.add("active");
+      tabSetup.classList.remove("active");
+      loginForm.style.display = "flex";
+      setupForm.style.display = "none";
+      loginError.style.display = "none";
+      setupError.style.display = "none";
+    }
+
+    function switchToSetup() {
+      tabSetup.classList.add("active");
+      tabLogin.classList.remove("active");
+      setupForm.style.display = "flex";
+      loginForm.style.display = "none";
+      loginError.style.display = "none";
+      setupError.style.display = "none";
+    }
+
+    tabLogin.addEventListener("click", () => {
+      if (!hasPasscode()) {
+        // If no passcode yet, force setup tab
+        switchToSetup();
+      } else {
+        switchToLogin();
+      }
+    });
+
+    tabSetup.addEventListener("click", () => {
+      switchToSetup();
+    });
+
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const input = document.getElementById("login-passcode").value;
+      const stored = localStorage.getItem(PASSCODE_KEY) || "";
+      if (!stored) {
+        // No passcode set yet, send them to setup
+        switchToSetup();
+        return;
+      }
+      if (input && input === stored) {
+        loginError.style.display = "none";
+        document.getElementById("login-passcode").value = "";
+        showApp();
+      } else {
+        loginError.style.display = "block";
+      }
+    });
+
+    setupForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const p1 = document.getElementById("setup-passcode").value;
+      const p2 = document.getElementById("setup-passcode-confirm").value;
+      if (!p1 || p1.length < 3 || p1 !== p2) {
+        setupError.style.display = "block";
+        return;
+      }
+      localStorage.setItem(PASSCODE_KEY, p1);
+      setupError.style.display = "none";
+      document.getElementById("setup-passcode").value = "";
+      document.getElementById("setup-passcode-confirm").value = "";
+      showApp();
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      showAuth();
+      switchToLogin();
+    });
+
+    // Initial auth state
+    if (hasPasscode()) {
+      switchToLogin();
+    } else {
+      switchToSetup();
+    }
+
+    /* -------- Payment tracker logic -------- */
 
     function loadEntries() {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -806,8 +1236,8 @@
 
       summaryEl.innerHTML = `
         <span><strong>${entries.length}</strong> record${
-        entries.length === 1 ? "" : "s"
-      } saved on this device.</span>
+          entries.length === 1 ? "" : "s"
+        } saved on this device.</span>
         <span>Total: <strong>${formatCurrency(total, currency)}</strong></span>
       `;
 
